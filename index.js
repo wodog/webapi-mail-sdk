@@ -8,11 +8,9 @@ const querystring = require('querystring');
 const Mail_sdk = module.exports = function(host) {
     assert(host, '参数host必须存在');
     assert(typeof host === 'string', '参数host必须是字符串');
-
     if (!(this instanceof Mail_sdk)) {
         return new Mail_sdk(host);
     }
-
     this.host = host;
 };
 
