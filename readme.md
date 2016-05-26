@@ -1,6 +1,6 @@
 ## webapi-mail-sdk
 
-与(webapi-mail)[https://github.com/wodog/webapi-mail]配套的sdk,
+与[webapi-mail](https://github.com/wodog/webapi-mail)配套的sdk,
 相关参数信息请参考它.
 
 ### Usage
@@ -9,7 +9,10 @@
 * 返回Promise对象
 
 ```
+// 安装
 npm install --save webapi-mail-sdk
+
+// 引入模块
 const mail = require('webapi-mail-sdk')(${webapi-mail服务主机地址})
 
 mail.add({
