@@ -28,17 +28,17 @@ describe('测试构造函数', function() {
 
 
 describe('测试功能', function() {
-    var mail_sdk;
-    var api_key;
+    let mail_sdk;
+    let api_key;
 
     before(function(done) {
         mail_sdk = require('../')('http://localhost:3000');
         done();
     });
 
-    it('add', function() {
+    it('addUser', function() {
         return co(function*() {
-            const res = yield mail_sdk.add({
+            const res = yield mail_sdk.addUser({
                 user: 'qqq536505032@163.com',
                 pass: 'qq536505032',
                 host: 'smtp.163.com',
@@ -52,66 +52,107 @@ describe('测试功能', function() {
         });
     });
 
-    it('update', function() {
+    it('updateUser', function() {
         return co(function*() {
-            const res = yield mail_sdk.update({
+            const res = yield mail_sdk.updateUser({
                 api_key: api_key,
                 name: 'wodog'
             });
 
             assert.deepEqual(res.code, 0, res.data);
             assert.deepEqual(res.msg, 'success');
-            assert.deepEqual(res.data, {
-                user: 'qqq536505032@163.com',
-                host: 'smtp.163.com',
-                port: 465,
-                name: 'wodog',
-                pool: false,
-                secure: true
-            });
         });
     });
 
-    it('view', function() {
+    it('findUser', function() {
         return co(function*() {
-            const res = yield mail_sdk.view({
+            const res = yield mail_sdk.findUser({
                 api_key: api_key
             });
 
             assert.deepEqual(res.code, 0, res.data);
-            assert.deepEqual(res.msg, 'success');
-            assert.deepEqual(res.data.user, 'qqq536505032@163.com');
-            assert.deepEqual(res.data.host, 'smtp.163.com');
-            assert.deepEqual(res.data.port, 465);
-            assert.deepEqual(res.data.name, 'wodog');
-            assert.deepEqual(res.data.pool, false);
-            assert.deepEqual(res.data.secure, true);
-            assert.ok(res.data.create_at);
-            assert.ok(res.data.update_at);
         });
     });
 
-    it('send', function() {
+    it('addTemplate', function() {
         return co(function*() {
-            const res = yield mail_sdk.send({
-                api_key: api_key,
-                to: ['qqq536505032@163.com', 'zhoucy@trendwood.cn'],
-                subject: '测试主题',
-                html: '<p>测试内容</p>'
-            });
-
-            assert.deepEqual(res.code, 0, res.data);
-            assert.deepEqual(res.msg, 'success');
-            assert.deepEqual(res.data, '邮件发送成功');
+            const name = 'test';
+            const content = 'test_content';
+            const res = yield mail_sdk.addTemplate({ api_key, name, content });
+            assert.deepEqual(0, res.code, res.data);
         });
     });
 
-    it('remove', function() {
+    it('updateTemplate', function() {
         return co(function*() {
-            const res = yield mail_sdk.remove({
+            const name = 'test';
+            const content = '<h1>${hello}</h1>';
+            const res = yield mail_sdk.updateTemplate({ api_key, name, content });
+            assert.deepEqual(0, res.code, res.data);
+        });
+    });
+
+    it('findTemplate', function() {
+        return co(function*() {
+            const name = 'test';
+            const res = yield mail_sdk.findTemplate({ api_key, name });
+            assert.deepEqual(0, res.code, res.data);
+        });
+    });
+
+    it('findTemplates', function() {
+        return co(function*() {
+            const res = yield mail_sdk.findTemplates({ api_key });
+            assert.deepEqual(0, res.code, res.data);
+        });
+    });
+
+    it('sendWithHtml', function() {
+        return co(function*() {
+            const to = 'zhoucy@trendwood.cn';
+            const subject = '测试sendWithHtml标题';
+            const html = '<h1>测试sendWithHtml内容</h1>';
+            const res = yield mail_sdk.sendWithHtml({ api_key, to, subject, html });
+            assert.deepEqual(0, res.code, res.data);
+        });
+    });
+
+    it('sendWithText', function() {
+        return co(function*() {
+            const to = 'zhoucy@trendwood.cn';
+            const subject = '测试sendWithText标题';
+            const text = '<h1>测试sendWithHtml内容</h1>';
+            const res = yield mail_sdk.sendWithText({ api_key, to, subject, text });
+            assert.deepEqual(0, res.code, res.data);
+        });
+    });
+
+    it('sendWithTemplate', function() {
+        return co(function*() {
+            const to = 'zhoucy@trendwood.cn';
+            const subject = '测试sendWithTemplate标题';
+            const name = 'test';
+            const data = { "hello": "hello world" };
+            const res = yield mail_sdk.sendWithTemplate({ api_key, to, subject, name, data });
+            assert.deepEqual(0, res.code, res.data);
+        });
+    });
+
+
+    it('removeTemplate', function() {
+        return co(function*() {
+            const name = 'test';
+            const res = yield mail_sdk.removeTemplate({ api_key, name });
+            assert.deepEqual(0, res.code, res.data);
+        });
+    });
+
+    it('removeUser', function() {
+        return co(function*() {
+            const res = yield mail_sdk.removeUser({
                 api_key: api_key
             });
-            
+
             assert.deepEqual(res.code, 0, res.data);
             assert.deepEqual(res.msg, 'success');
             assert.deepEqual(res.data, '删除成功');

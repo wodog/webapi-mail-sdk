@@ -10,7 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "co": "^4.6.0",
-    "node-fetch": "^1.5.2"
+    "node-fetch": "^1.5.2",
+    "qs": "^6.2.0"
   },
   "devDependencies": {
     "mocha": "^2.5.2"
