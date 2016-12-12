@@ -14,6 +14,6 @@
     "qs": "^6.2.0"
   },
   "devDependencies": {
-    "mocha": "^2.5.2"
+    "mocha": "^3.2.0"
   }
 }
